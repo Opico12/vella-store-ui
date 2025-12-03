@@ -62,17 +62,6 @@ const PayPalIcon = () => (
     </svg>
 );
 
-const GooglePayIcon = () => (
-    <svg className="w-10 h-6" viewBox="0 0 38 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="38" height="24" rx="2" fill="white"/>
-        <path d="M10.5 11.8L12.5 7.5H14.5L11.4 14.6L9.6 18.5H7.7L9.5 14.6L6.5 7.5H8.6L10.5 11.8Z" fill="#5F6368"/>
-        <path d="M17.8 10.4C17.8 9.8 17.7 9.3 17.6 8.8H14.1V10.8H16.2C16.1 11.3 15.8 11.8 15.4 12.1V13.2H16.6C17.3 12.5 17.8 11.6 17.8 10.4Z" fill="#4285F4"/>
-        <path d="M14.1 14.2C15.1 14.2 16 13.9 16.6 13.3L15.4 12.2C15 12.5 14.6 12.7 14.1 12.7C13.2 12.7 12.4 12.1 12.1 11.3H10.9V12.2C11.5 13.4 12.7 14.2 14.1 14.2Z" fill="#34A853"/>
-        <path d="M12.1 11.3C12 11.1 12 10.9 12 10.6C12 10.4 12 10.1 12.1 9.9V9H10.9C10.6 9.5 10.5 10.1 10.5 10.6C10.5 11.2 10.6 11.8 10.9 12.3L12.1 11.3Z" fill="#FBBC05"/>
-        <path d="M14.1 8.5C14.7 8.5 15.2 8.7 15.6 9.1L16.7 8C16 7.4 15.1 7 14.1 7C12.7 7 11.5 7.8 10.9 9L12.1 9.9C12.4 9.1 13.2 8.5 14.1 8.5Z" fill="#EA4335"/>
-    </svg>
-);
-
 
 interface FooterProps {
     onNavigate: (view: View, payload?: any) => void;
@@ -178,7 +167,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                             <VisaIcon />
                             <MastercardIcon />
                             <PayPalIcon />
-                            <GooglePayIcon />
                         </div>
                     </div>
                 </div>

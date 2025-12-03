@@ -16,19 +16,6 @@ const StarIcon: React.FC<{ className?: string; style?: React.CSSProperties }> = 
     </svg>
 );
 
-// OFFICIAL GOOGLE PAY LOGO STYLE (White on Dark or Color)
-const GooglePayLogo = () => (
-    <div className="flex items-center justify-center gap-1.5">
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4.5 3.5L13.5 12L4.5 20.5V3.5Z" fill="#4285F4"/>
-            <path d="M13.5 12L18.5 17L21.5 12L18.5 7L13.5 12Z" fill="#FBBC05"/>
-            <path d="M18.5 17L13.5 12L4.5 20.5L18.5 17Z" fill="#EA4335"/>
-            <path d="M4.5 3.5L13.5 12L18.5 7L4.5 3.5Z" fill="#34A853"/>
-        </svg>
-        <span className="font-sans font-bold text-sm tracking-tight">Google Pay</span>
-    </div>
-);
-
 interface ProductCardProps {
     product: Product;
     currency: Currency;
@@ -73,30 +60,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, currency, onA
                 }
             }
             onQuickAddToCart(product, addToCartBtnRef.current, defaultVariant);
-        }
-    };
-
-    const handleBuyNowClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (product.stock === 0) return;
-
-        if (hasManyVariants) {
-            onProductSelect(product);
-        } else {
-            let defaultVariant = null;
-            if (product.variants) {
-                defaultVariant = {};
-                for (const key in product.variants) {
-                     if (product.variants[key].length > 0) {
-                        defaultVariant[key] = product.variants[key][0].value;
-                     }
-                }
-            }
-            if (onBuyNow) {
-                onBuyNow(product, buyNowBtnRef.current, defaultVariant);
-            } else {
-                onQuickAddToCart(product, addToCartBtnRef.current, defaultVariant);
-            }
         }
     };
 
@@ -192,17 +155,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, currency, onA
                         >
                             {product.stock === 0 ? 'Agotado' : 'Añadir al carrito'}
                         </button>
-
-                        {/* 2. GOOGLE PAY BUTTON - OFFICIAL STYLE */}
-                        {product.stock > 0 && (
-                            <button
-                                onClick={handleBuyNowClick}
-                                className="w-full py-2.5 rounded-lg bg-black text-white hover:bg-gray-900 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95"
-                                title="Pagar ahora con Google Play"
-                            >
-                                <span className="text-white fill-current"><GooglePayLogo /></span>
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>

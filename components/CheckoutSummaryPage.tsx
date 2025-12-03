@@ -42,15 +42,6 @@ const WhatsAppIcon = () => (
     </svg>
 );
 
-const GooglePlayLogo = () => (
-    <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4.5 3.5L13.5 12L4.5 20.5V3.5Z" fill="#2196F3"/>
-        <path d="M13.5 12L18.5 17L21.5 12L18.5 7L13.5 12Z" fill="#FFC107"/>
-        <path d="M18.5 17L13.5 12L4.5 20.5L18.5 17Z" fill="#F44336"/>
-        <path d="M4.5 3.5L13.5 12L18.5 7L4.5 3.5Z" fill="#4CAF50"/>
-    </svg>
-);
-
 const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({ 
     cartItems, 
     currency, 
@@ -59,7 +50,6 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
     // --- STATE MANAGEMENT ---
     const [isOrderComplete, setIsOrderComplete] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState<'card' | 'google_play'>('google_play');
     const [orderNumber, setOrderNumber] = useState('');
     
     // Customer Info
@@ -82,11 +72,6 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
         cvc: '',
         name: ''
     });
-
-    const [googlePlayCode, setGooglePlayCode] = useState('');
-    const [googleAccountName, setGoogleAccountName] = useState('');
-    const [googleAccountEmail, setGoogleAccountEmail] = useState('');
-
 
     // --- CALCULATIONS ---
     const subtotal = useMemo(() => {
@@ -145,9 +130,9 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
                 product_id: parseInt(item.product.id.toString().replace('wc-', '').replace('sim-', '')),
                 quantity: item.quantity
             })),
-            payment_method: paymentMethod === 'google_play' ? 'Google Play' : 'Credit Card',
-            payment_method_title: paymentMethod === 'google_play' ? 'Google Play Balance' : 'Credit Card',
-            customer_note: paymentMethod === 'google_play' ? `Google Play Account: ${googleAccountEmail} - Name: ${googleAccountName} - Code: ${googlePlayCode}` : ''
+            payment_method: 'Credit Card',
+            payment_method_title: 'Credit Card',
+            customer_note: ''
         };
 
         try {
@@ -216,7 +201,7 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
                             </div>
                             <div>
                                 <p className="text-gray-500 text-xs uppercase font-bold">Método</p>
-                                <p className="font-medium text-gray-900">{paymentMethod === 'google_play' ? 'Google Play' : 'Tarjeta'}</p>
+                                <p className="font-medium text-gray-900">Tarjeta</p>
                             </div>
                         </div>
 
@@ -322,96 +307,31 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
                                 Método de Pago
                             </h2>
 
-                            {/* Payment Tabs - INTERACTIVE */}
-                            <div className="grid grid-cols-2 gap-4 mb-6">
-                                <button
-                                    type="button"
-                                    onClick={() => setPaymentMethod('google_play')}
-                                    className={`relative p-5 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow-md ${
-                                        paymentMethod === 'google_play' 
-                                        ? 'border-black bg-blue-50/30 ring-1 ring-black shadow-md' 
-                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                    }`}
-                                >
-                                    <GooglePlayLogo />
-                                    <span className={`font-bold text-sm ${paymentMethod === 'google_play' ? 'text-black' : 'text-gray-600'}`}>Google Pay</span>
-                                    {paymentMethod === 'google_play' && (
-                                        <div className="absolute top-3 right-3 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
-                                            <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                                        </div>
-                                    )}
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() => setPaymentMethod('card')}
-                                    className={`relative p-5 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow-md ${
-                                        paymentMethod === 'card' 
-                                        ? 'border-black bg-gray-50 ring-1 ring-black shadow-md' 
-                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                    }`}
-                                >
+                            {/* Credit Card Form (Default & Only Option) */}
+                            <div className="space-y-4 bg-gray-50 p-6 rounded-xl border border-gray-200 animate-fade-in">
+                                <div className="flex items-center gap-2 mb-2 text-gray-900 font-bold">
                                     <CreditCardIcon />
-                                    <span className={`font-bold text-sm ${paymentMethod === 'card' ? 'text-black' : 'text-gray-600'}`}>Tarjeta</span>
-                                    {paymentMethod === 'card' && (
-                                        <div className="absolute top-3 right-3 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
-                                            <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                                        </div>
-                                    )}
-                                </button>
+                                    <span>Datos de la Tarjeta</span>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Número de Tarjeta</label>
+                                    <input required type="text" name="number" maxLength={19} placeholder="0000 0000 0000 0000" value={cardDetails.number} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white font-mono" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Caducidad</label>
+                                        <input required type="text" name="expiry" placeholder="MM / AA" maxLength={5} value={cardDetails.expiry} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white text-center" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">CVC</label>
+                                        <input required type="text" name="cvc" placeholder="123" maxLength={4} value={cardDetails.cvc} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white text-center" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Titular</label>
+                                    <input required type="text" name="name" placeholder="Nombre en la tarjeta" value={cardDetails.name} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white" />
+                                </div>
                             </div>
-
-                            {/* Google Play Form */}
-                            {paymentMethod === 'google_play' && (
-                                <div className="space-y-4 bg-blue-50 p-6 rounded-xl border border-blue-100 animate-fade-in relative">
-                                    <div className="flex items-center gap-2 mb-2 text-blue-900 font-bold">
-                                        <GooglePlayLogo />
-                                        <span>Detalles de tu cuenta Google Play</span>
-                                    </div>
-                                    <div className="grid grid-cols-1 gap-4">
-                                        <div>
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Email Google Play</label>
-                                            <input required type="email" placeholder="ejemplo@gmail.com" value={googleAccountEmail} onChange={(e) => setGoogleAccountEmail(e.target.value)} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none bg-white" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Nombre del Titular</label>
-                                            <input required type="text" placeholder="Nombre completo" value={googleAccountName} onChange={(e) => setGoogleAccountName(e.target.value)} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none bg-white" />
-                                        </div>
-                                        <div>
-                                             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Código Promocional / Tarjeta Regalo (Opcional)</label>
-                                             <input type="text" placeholder="XXXX-XXXX-XXXX" value={googlePlayCode} onChange={(e) => setGooglePlayCode(e.target.value)} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none font-mono bg-white uppercase" />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Credit Card Form */}
-                            {paymentMethod === 'card' && (
-                                <div className="space-y-4 bg-gray-50 p-6 rounded-xl border border-gray-200 animate-fade-in">
-                                    <div className="flex items-center gap-2 mb-2 text-gray-900 font-bold">
-                                        <CreditCardIcon />
-                                        <span>Datos de la Tarjeta</span>
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Número de Tarjeta</label>
-                                        <input required type="text" name="number" maxLength={19} placeholder="0000 0000 0000 0000" value={cardDetails.number} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white font-mono" />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Caducidad</label>
-                                            <input required type="text" name="expiry" placeholder="MM / AA" maxLength={5} value={cardDetails.expiry} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white text-center" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">CVC</label>
-                                            <input required type="text" name="cvc" placeholder="123" maxLength={4} value={cardDetails.cvc} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white text-center" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Titular</label>
-                                        <input required type="text" name="name" placeholder="Nombre en la tarjeta" value={cardDetails.name} onChange={handleCardChange} className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white" />
-                                    </div>
-                                </div>
-                            )}
                         </section>
                     </div>
 
@@ -473,7 +393,6 @@ const CheckoutSummaryPage: React.FC<CheckoutSummaryPageProps> = ({
                             
                             <div className="mt-6 flex justify-center gap-2 opacity-50 grayscale">
                                 <CreditCardIcon />
-                                <GooglePlayLogo />
                             </div>
 
                             <div className="mt-4 text-center">
