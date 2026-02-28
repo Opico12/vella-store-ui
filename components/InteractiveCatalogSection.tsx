@@ -8,7 +8,7 @@ interface InteractiveCatalogSectionProps {
 
 const InteractiveCatalogSection: React.FC<InteractiveCatalogSectionProps> = ({ onNavigate }) => {
     // Usamos el enlace 'current' para que nunca caduque
-    const INTERACTIVE_CATALOG_URL = 'https://es-catalogue.oriflame.com/oriflame/es-ES/current?HideStandardUI=true&Page=1';
+    const INTERACTIVE_CATALOG_URL = 'https://es-catalogue.oriflame.com/oriflame/es/2026003-brp?HideStandardUI=true&Page=1';
 
     return (
         <section className="flex flex-col md:flex-row gap-8 items-center bg-gray-50 rounded-2xl p-6 md:p-10 border border-gray-100">
@@ -44,9 +44,12 @@ const InteractiveCatalogSection: React.FC<InteractiveCatalogSectionProps> = ({ o
             <div className="w-full md:w-1/2">
                 <div className="relative aspect-[4/3] bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 transform md:rotate-1 hover:rotate-0 transition-transform duration-500">
                     <iframe
+                        data-ipaper="true"
+                        id="ipaper-catalogue-preview"
+                        data-testid="Presentation-catalogue-ipaper-iframe-preview"
                         src={INTERACTIVE_CATALOG_URL}
-                        title="Vista Previa Catálogo"
-                        className="w-full h-full border-0 pointer-events-none" // pointer-events-none para que al hacer click vaya a la pagina dedicada si se desea, o dejarlo interactivo
+                        title="iPaper"
+                        className="w-full h-full border-0 pointer-events-none products-app-emotion-z39r5g"
                         loading="lazy"
                     />
                     {/* Overlay invisible para capturar click y navegar a la página completa (opcional, mejora UX en móviles) */}

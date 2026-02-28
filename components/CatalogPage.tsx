@@ -6,7 +6,7 @@ import type { Product } from './types';
 import type { Currency } from './currency';
 
 // URL Oficial del Catálogo Actual (Oriflame España) - Se actualiza sola
-const INTERACTIVE_CATALOG_URL = 'https://es-catalogue.oriflame.com/oriflame/es-ES/current?HideStandardUI=true&Page=1';
+const INTERACTIVE_CATALOG_URL = 'https://es-catalogue.oriflame.com/oriflame/es/2026003-brp?HideStandardUI=true&Page=1';
 const FALLBACK_CATALOG_URL = 'https://es.oriflame.com/products/digital-catalogue-current';
 
 interface CatalogPageProps {
@@ -97,9 +97,12 @@ const CatalogPage: React.FC<CatalogPageProps> = ({ onAddToCart, onQuickAddToCart
                 {/* VISOR DEL CATÁLOGO (IFRAME) */}
                 <div className="relative w-full bg-gray-100 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 mb-16" style={{ height: '80vh', minHeight: '600px' }}>
                     <iframe
+                        data-ipaper="true"
+                        id="ipaper-catalogue"
+                        data-testid="Presentation-catalogue-ipaper-iframe"
                         src={INTERACTIVE_CATALOG_URL}
-                        title="Catálogo Digital Vellaperfumeria"
-                        className="w-full h-full absolute inset-0"
+                        title="iPaper"
+                        className="w-full h-full absolute inset-0 products-app-emotion-z39r5g"
                         style={{ border: 'none' }}
                         allowFullScreen
                         sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
